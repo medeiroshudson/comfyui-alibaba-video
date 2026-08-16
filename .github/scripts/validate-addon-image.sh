@@ -17,7 +17,7 @@ docker run --rm "$image" sh -ceu '
     exit 1
   fi
 
-  python -c "import sys; sys.path.insert(0, '/opt/comfyui-addon/custom_nodes/ComfyUI-Alibaba-Video'); import alibaba_video.node"
+  python -c "import sys; sys.path.insert(0, \"/opt/comfyui-addon/custom_nodes/ComfyUI-Alibaba-Video\"); import alibaba_video.node"
 '
 
 echo "addon image validation passed: $image"
