@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
+*.secret
+*.token
+.cache/
+.DS_Store
+
+# Build and coverage artifacts
+dist/
+build/
+.coverage
+htmlcov/
+
+# Local image export
+*.tar
+*.tar.gz

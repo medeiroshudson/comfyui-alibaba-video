@@ -1,0 +1,17 @@
+tests/
+.pytest_cache/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+Dockerfile
+README.md
+.github/
+.venv/
+.cache/
+.env
+.env.*
+*.secret
+*.token
+pyproject.toml
+LICENSE
