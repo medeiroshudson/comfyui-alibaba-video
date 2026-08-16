@@ -54,6 +54,33 @@ ghcr.io/medeiroshudson/comfyui-alibaba-video
 
 Use sempre uma tag fixada por digest em ambientes de produção.
 
+## Atualização e rollback
+
+O pipeline publica uma imagem por commit e o Kubernetes deve consumir somente
+uma referência imutável `tag@sha256:digest`. O fluxo de atualização é:
+
+1. Executar os testes e a validação estrutural da imagem.
+2. Publicar a imagem e confirmar que o manifesto GHCR pode ser baixado sem autenticação.
+3. Atualizar o `initContainer` para a nova tag SHA e o digest correspondente.
+4. Validar com `kubectl kustomize` e `kubectl apply --dry-run=server`.
+5. Aplicar somente a base do ComfyUI e aguardar o rollout.
+6. Confirmar `initContainer=Completed`, `Ready=True`, zero restarts e `AlibabaTextToVideo` em `/object_info`.
+
+O `initContainer` valida a presença de `__init__.py` e
+`alibaba_video/node.py` antes e depois da cópia para o PVC. Se a imagem estiver
+mal empacotada, ele deve falhar em vez de deixar o Pod pronto sem o node.
+
+Para rollback, restaure o `tag@sha256:digest` anterior no Deployment, valide o
+manifesto e reaplique o mesmo recurso. Preserve o PVC e o digest anterior até
+que a nova versão esteja validada.
+
+Releases versionadas são referências legíveis para humanos; o Deployment
+continua fixado por digest, inclusive quando consumir uma release:
+
+```text
+ghcr.io/medeiroshudson/comfyui-alibaba-video:v0.1.0@sha256:<digest>
+```
+
 ## Testes
 
 ```bash

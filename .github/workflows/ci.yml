@@ -30,3 +30,9 @@ jobs:
 
       - name: Compile Python modules
         run: python -m compileall -q alibaba_video custom_nodes
+
+      - name: Build addon image for structural validation
+        run: docker build --pull --tag comfyui-addon-ci:${{ github.sha }} .
+
+      - name: Validate addon image layout and imports
+        run: sh .github/scripts/validate-addon-image.sh comfyui-addon-ci:${{ github.sha }}
